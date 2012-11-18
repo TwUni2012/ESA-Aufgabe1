@@ -22,7 +22,7 @@ import knabe.esa.local_bean.Konto.UngedecktException;
  * @author tiloW7-2012
  */
 @Stateless
-public class StatelessBankOwnImpl implements StatelessBank, Serializable {
+public class StatelessBankOwnImpl implements StatelessBank {
 
     @PersistenceContext(unitName = "bank-unit"/*, type = PersistenceContextType.TRANSACTION*/) //Default: type=TRANSACTION
     private EntityManager entityManager;
@@ -57,7 +57,6 @@ public class StatelessBankOwnImpl implements StatelessBank, Serializable {
         final Konto zielKonto = kontoSuchen(empfaenger);//(Konto) entityManager.find(Konto.class, empfaenger);
         zielKonto.saldoAendern(+betrag);
         quellKonto.saldoAendern(-betrag);
-       
     }
 
     @Override
@@ -65,11 +64,11 @@ public class StatelessBankOwnImpl implements StatelessBank, Serializable {
         final Konto konto = kontoSuchen(name);
         // TODO evt. noch auf null testen?=
 //        System.out.println("###############" + konto);
-        if(konto != null) {
+        if (konto != null) {
             entityManager.remove(konto);
         } else {
-        throw new IllegalArgumentException("Der Nutzer: " + name + " besitzt derzeit kein Konto.");
-    }
+            throw new IllegalArgumentException("Der Nutzer: " + name + " besitzt derzeit kein Konto.");
+        }
     }
 
     @Override
@@ -78,4 +77,3 @@ public class StatelessBankOwnImpl implements StatelessBank, Serializable {
         return query.getResultList();
     }
 }
-
